@@ -1,5 +1,6 @@
 import './App.css'
 import {TodolistItem} from "./TodolistItem.tsx";
+import {useState} from "react";
 
 export type Task = {
   id: number
@@ -8,22 +9,28 @@ export type Task = {
 }
 
 export const App = () => {
-  const tasks1: Task[] = [
+  const [tasks, setTasks] = useState<Task[]>([
     { id: 1, title: 'HTML', isDone: true},
     { id: 2, title: 'JS', isDone: true},
     { id: 3, title: 'React', isDone: false},
     { id: 4, title: 'Redux', isDone: false},
-  ]
+  ])
 
-  const tasks2: Task[] = []
+  const deleteTask = (taskId: number) => {
+    const filteredTasks = tasks.filter(task => {
+      return task.id !== taskId
+    })
+    setTasks(filteredTasks);
+  }
+
   return (
       <>
         <div className="app">
-          <TodolistItem title="What to learn" tasks={tasks1} data='14.09.2026'/>
-          <TodolistItem title="Songs" tasks={tasks2}/>
+          <TodolistItem title="What to learn"
+                        tasks={tasks}
+                        deleteTask={deleteTask}
+          />
         </div>
       </>
   )
 }
-
-export default App
