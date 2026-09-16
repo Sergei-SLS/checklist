@@ -20,6 +20,12 @@ export const App = () => {
     { id: v1(), title: 'Redux', isDone: false},
   ])
 
+  const createTask = (title: string) => {
+    const newTask = {id: v1(), title, isDone: false}
+    const newTasks = [newTask, ...tasks]
+    setTasks(newTasks)
+  }
+
   const deleteTask = (taskId: string) => {
     const filteredTasks = tasks.filter(task => {
       return task.id !== taskId
@@ -46,6 +52,7 @@ export const App = () => {
                         tasks={filteredTasks}
                         deleteTask={deleteTask}
                         changeFilter={changeFilter}
+                        createTask={createTask}
           />
         </div>
       </>
