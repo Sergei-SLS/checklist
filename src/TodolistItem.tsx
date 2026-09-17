@@ -8,9 +8,10 @@ type Props = {
     deleteTask: (taskId: string) => void
     changeFilter: (filter: FilterValue) => void
     createTask: (title: string) => void
+    changeTaskStatus: (taskId: string, isDone: boolean) => void
 }
 
-export const TodolistItem = ({title, tasks, deleteTask, changeFilter, createTask}: Props) => {
+export const TodolistItem = ({title, tasks, deleteTask, changeFilter, createTask, changeTaskStatus}: Props) => {
     const [taskTitle, setTaskTitle] = useState('')
 
     const createTaskHandler = () => {
@@ -27,6 +28,7 @@ export const TodolistItem = ({title, tasks, deleteTask, changeFilter, createTask
     const changeTaskTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setTaskTitle(e.currentTarget.value)
     }
+
     return (
         <div>
             <h3>{title}</h3>
@@ -41,14 +43,20 @@ export const TodolistItem = ({title, tasks, deleteTask, changeFilter, createTask
                 <p>Tasks no</p>
             ) : (
                 <ul>
-                    {tasks.map(tasks => {
+                    {tasks.map(task => {
                         const deleteTaskHandler = () => {
-                            deleteTask(tasks.id)
+                            deleteTask(task.id)
                         }
+
+                        const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+                            const newStatusValue = e.currentTarget.checked
+                            changeTaskStatus(task.id, newStatusValue)
+                        }
+
                         return (
-                            <li key={tasks.id}>
-                                <input type="checkbox" checked={tasks.isDone}/>
-                                <span>{tasks.title}</span>
+                            <li key={task.id}>
+                                <input type="checkbox" checked={task.isDone} onChange={changeTaskStatusHandler} />
+                                <span>{task.title}</span>
                                 <Button title={'❎'} onClick={deleteTaskHandler}/>
                             </li>
                         )
